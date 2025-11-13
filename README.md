@@ -1,4 +1,4 @@
-# Fullstack_Course_Typescript
+# Fullstack_Course_SQL
 Curso de Bases de Datos Relacionales de Fullstack
 
 Bases de Datos Relacionales

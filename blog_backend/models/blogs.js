@@ -14,32 +14,35 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
         : { },
 })
 
-class Note extends Model {}
+class Blog extends Model {}
 
-  Note.init({
+  Blog.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    content: {
+    author: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    important: {
-      type: DataTypes.BOOLEAN,
+    url: {
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
-    date: {
-        type: DataTypes.DATE,
+    title: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+    },
+    likes: {
+        type: DataTypes.INTEGER
     }
   }, {
     sequelize,
-    underscored: true,  //los nombres de las tablas se derivan de los nombres de los modelos como versiones en plural (snake case)
-    timestamps: false,  //no tiene que usar las columnas de marcas de tiempo (created_at and updated_at)
-    modelName: 'note'
+    underscored: true,
+    timestamps: false,
+    modelName: 'blog'
   }
 )
 
-Note.sync() //crea la tabla automáticamente si no existe
-
-module.exports = Note;
+module.exports = Blog;
