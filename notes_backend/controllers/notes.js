@@ -24,6 +24,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', noteFinder, async (req, res) => {
 
     if (req.note) {
+        console.log('Note: ', JSON.stringify(req.note,null,2))
         res.status(200).json(req.note)
     } else {
         res.status(404).end()
