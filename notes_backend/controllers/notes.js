@@ -1,0 +1,71 @@
+const router = require('express').Router()
+
+const { Note } = require('../models')
+
+//middleware que busca la nota de la base de datos 
+const noteFinder = async(req, res, next) => {
+    console.log('Note id: ', req.params.id);
+    req.note = await Note.findByPk(req.params.id)
+    console.log('Note found: ', req.note);
+    next()
+}
+
+//Busca todos los elementos
+router.get('/', async (req, res) => {
+    const notes = await Note.findAll()
+    //console.log('Notes: ', notes.toJSON())
+    //console.log( notes.map ( note => note.toJSON()))
+    console.log('Notes: ', JSON.stringify(notes, null, 2))
+    
+    res.status(200).json(notes)
+})
+
+//Busca un solo elemento
+router.get('/:id', noteFinder, async (req, res) => {
+
+    if (req.note) {
+        res.status(200).json(req.note)
+    } else {
+        res.status(404).end()
+    }
+})
+
+//Se agrega un elemento
+router.post('/', async (req, res) => {
+    console.log('Note body to create: ', req.body)
+
+    try {
+        const note = Note.build(req.body)
+        await note.save()
+        res.status(200).json(note)
+    } catch (error) {
+        console.error('Error: ', error);
+        res.status(400).json( { error } )
+    }
+})
+
+//Se modifica un elemento
+router.put('/:id', noteFinder, async (req, res) => {
+
+    console.log('Note body to update: ', req.body);
+
+    if (req.note){      
+        req.note.important = req.body.important
+        await req.note.save()
+        return res.status(200).json(req.note)
+    } else {
+        res.status(404).end()
+    }
+})
+
+//Se elimina un elemento
+router.delete('/:id', noteFinder, async (req, res) => {
+
+    if (req.note){
+        await req.note.destroy()
+    }
+
+    return res.status(204).end()
+})
+
+module.exports = router

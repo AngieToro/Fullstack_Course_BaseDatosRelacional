@@ -1,18 +1,5 @@
-const { Sequelize,DataTypes, Model } = require('sequelize');
-
-const useSSL = process.env.NODE_ENV === 'prod'
-
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
-    dialectOptions: useSSL
-        ? {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false
-            },
-        }
-        : { },
-})
+const { Model, DataTypes } = require('sequelize');
+const { sequelize } = require('../util/db')
 
 class Note extends Model {}
 
@@ -39,7 +26,5 @@ class Note extends Model {}
     modelName: 'note'
   }
 )
-
-Note.sync() //crea la tabla automáticamente si no existe
 
 module.exports = Note;
