@@ -1,6 +1,8 @@
 const router = require('express').Router()
+const jwt = require('jsonwebtoken')
 
-const { Note } = require('../models')
+const { Note, User } = require('../models');
+const { SECRET } = require('../util/config');
 
 //middleware que busca la nota de la base de datos 
 const noteFinder = async(req, res, next) => {
@@ -10,9 +12,37 @@ const noteFinder = async(req, res, next) => {
     next()
 }
 
+//verificar el token del usuario conectado
+const tokenExtractor = ((req, res, next) => { 
+    const authorization = req.get('authorization')
+    console.log('Token: ', authorization)    
+
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')){
+        try {
+            req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
+            console.log('Decoked token: ', req.decodedToken)
+            
+        } catch {
+            res.status(401).json({ error: 'Token invalid'})
+        }
+    }
+    else {
+        res.status(401).json({ error: 'Token missing'})
+    }
+
+    next()
+})
+
 //Busca todos los elementos
 router.get('/', async (req, res) => {
-    const notes = await Note.findAll()
+    //const notes = await Note.findAll()
+    const notes = await Note.findAll({
+        attributes: { exclude: ['userId'] },
+        include: {
+            model: User,
+            attributes: [ 'name','username' ]
+        }
+    })
     //console.log('Notes: ', notes.toJSON())
     //console.log( notes.map ( note => note.toJSON()))
     console.log('Notes: ', JSON.stringify(notes, null, 2))
@@ -32,13 +62,23 @@ router.get('/:id', noteFinder, async (req, res) => {
 })
 
 //Se agrega un elemento
-router.post('/', async (req, res) => {
+router.post('/', tokenExtractor, async (req, res) => {
     console.log('Note body to create: ', req.body)
 
     try {
-        const note = Note.build(req.body)
+        const user = await User.findByPk(req.decodedToken.id)
+        console.log('User found to add in a note: ', user.name)
+        
+        const note = Note.build( {
+            ...req.body,
+            date: new Date()
+        })
+        note.userId = user.id
         await note.save()
+        console.log('Note to add: ', note);
+        
         res.status(200).json(note)
+
     } catch (error) {
         console.error('Error: ', error);
         res.status(400).json( { error } )

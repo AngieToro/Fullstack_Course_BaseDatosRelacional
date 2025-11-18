@@ -1,7 +1,9 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llIiwiaWQiOjEsImlhdCI6MTc2MzQ5ODY4N30.Q0fVj_RCc46amx22X_--U5hU0t3ANiTg8P_O7cdIhbQ
 
 {
-    "content": "Testing", 
-    "important": false
+    "content": "Apple", 
+    "important": true,
+    "userId": 1
 }
