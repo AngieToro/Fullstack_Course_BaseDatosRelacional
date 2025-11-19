@@ -1,0 +1,17 @@
+### Buscar todas las notas
+GET http://localhost:3001/api/notes
+
+### Buscar una nota
+GET http://localhost:3001/api/notes/1
+
+### Filtrar notas por el nivel de importancia en true
+GET http://localhost:3001/api/notes?important=true
+
+### Filtrar notas por el nivel de importancia en false
+GET http://localhost:3001/api/notes?important=false
+
+### Filtrar notas por el nivel de importancia en true
+GET http://localhost:3001/api/notes?important=true
+
+### Filtrar notas por importancia y palabra clave
+GET http://localhost:3001/api/notes?search=Apple&important=true

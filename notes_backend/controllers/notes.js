@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const jwt = require('jsonwebtoken')
-
+const { Op } = require('sequelize')
 const { Note, User } = require('../models');
 const { SECRET } = require('../util/config');
 
@@ -35,13 +35,30 @@ const tokenExtractor = ((req, res, next) => {
 
 //Busca todos los elementos
 router.get('/', async (req, res) => {
+
+    const where = {}
+    /* let important = {
+        [Op.in]: [true, false]
+    } */
+
+    if ( req.query.important ){
+        where.important = req.query.important === "true"
+    }
+
+    if ( req.query.search ){
+        where.content = { [Op.substring]: req.query.search }
+    }
+
+    console.log('Where? ', where);
+    
     //const notes = await Note.findAll()
     const notes = await Note.findAll({
         attributes: { exclude: ['userId'] },
         include: {
             model: User,
             attributes: [ 'name','username' ]
-        }
+        },
+        where
     })
     //console.log('Notes: ', notes.toJSON())
     //console.log( notes.map ( note => note.toJSON()))
@@ -75,12 +92,12 @@ router.post('/', tokenExtractor, async (req, res) => {
         })
         note.userId = user.id
         await note.save()
-        console.log('Note to add: ', note);
+        console.log('Note to add: ', note)
         
         res.status(200).json(note)
 
     } catch (error) {
-        console.error('Error: ', error);
+        console.error('Error: ', error)
         res.status(400).json( { error } )
     }
 })
