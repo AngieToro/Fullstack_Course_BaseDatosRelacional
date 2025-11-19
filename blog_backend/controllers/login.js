@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 const router = require('express').Router()
 
-const { SECRET } = require('../util/config')
+const { SECRET, SALT_ROUNDS } = require('../util/config')
 const User = require('../models/user')
 
 router.post('/', async (req, res ) => {
 
-    console.log('User body to create: ', req.body)
+    console.log('User body to login: ', req.body)
     
     const user = await User.findOne({
         where: {
@@ -14,14 +15,20 @@ router.post('/', async (req, res ) => {
         }
     })
 
-    console.log('User found: ', user);
-
-    //contraseña cableada secret para todos los usuarios)
-    const passwordCorrect = req.body.password === 'secret'
-
-    if (!(user && passwordCorrect)){
+    if (!user){
         return res.status(401).json({
-            error: 'Invalid username or password'
+            error: 'Invalid username'
+        })
+    }
+
+    console.log('User found: ', user.dataValues)
+
+    const passwordCorrect = await bcrypt.compare(req.body.password, user.passwordHash)
+    console.log('Password is correct?: ', passwordCorrect);
+
+    if (!passwordCorrect){
+        return res.status(401).json({
+            error: 'Invalid password'
         })
     }
 

@@ -5,7 +5,8 @@ const errorHandler = (err, req, res, next) => {
     //Si el error proviene de Sequelize y es una validación 
     //por ejemplo un campo requerido faltante
     if (err.name === 'SequelizeValidationError') {
-        return res.status(400).json({ error: err.message })
+        const validationErrors = err.errors.map( error = `${error.path}: ${error.message}`)
+        return res.status(400).json({ errors: validationErrors })
     }
 
     //Si el error es de base de datos 

@@ -1,6 +1,8 @@
 const router = require('express').Router()
+const jwt = require('jsonwebtoken')
 
-const { Blog } = require('../models')
+const { Blog, User } = require('../models')
+const { SECRET } = require('../util/config');
 
 //middleware que busca el blog en la base de datos 
 const blogFinder = async(req, res, next) => {
@@ -14,14 +16,42 @@ const blogFinder = async(req, res, next) => {
         return next(error)
     }
 
-    console.log('Blog found: ', req.blog);
+    console.log('Blog found: ', req.blog.dataValues)
     next()
 }
+
+//verificar el token del usuario conectado
+const tokenExtractor = ((req, res, next) => { 
+    const authorization = req.get('authorization')
+    console.log('Token: ', authorization)    
+
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')){
+        try {
+            req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
+            console.log('Decoked token: ', req.decodedToken)
+            
+        } catch {
+            res.status(401).json({ error: 'Token invalid'})
+        }
+    }
+    else {
+        res.status(401).json({ error: 'Token missing'})
+    }
+
+    next()
+})
 
 //Busca todos los elementos
 router.get('/', async (req, res) => {
     
-    const blogs = await Blog.findAll()
+    //const blogs = await Blog.findAll()
+    const blogs = await Blog.findAll({
+        attributes: { exclude: ['userId']},
+        include: {
+            model: User,
+            attributes: [ 'name', 'username']
+        }
+    })
     //console.log('Blogs: ', blogs)
 
     blogs.forEach( blog => {
@@ -34,21 +64,32 @@ router.get('/', async (req, res) => {
 //Busca un solo elemento
 router.get('/:id', blogFinder, async (req, res) => {
 
-    console.log('Blog: ', JSON.stringify(req.blog,null,2))
-    res.status(200).json(req.blog)  
+    if (req.blog) {
+        console.log('Blog: ', JSON.stringify(req.blog,null,2))
+        res.status(200).json(req.blog) 
+    } else {
+        res.status(404).end()
+    }
 })
 
 //Se agrega un elemento
 //el error lo detecta el middleware
-router.post('/', async (req, res) => {
+router.post('/',tokenExtractor, async (req, res) => {
     
     console.log('Blog body to create: ', req.body)
 
     try {
+        const user = await User.findByPk(req.decodedToken.id)
+        console.log('User found to add in a blog: ', user.name)
+
         const blog = Blog.build(req.body)
+        blog.userId = user.id
+        blog.likes = 0
         await blog.save()
+        console.log('Blog to add: ', blog.dataValues)
         res.status(201).json(blog)
     } catch (error) {
+        console.error('Error: ', error)
         next(error)
     }
 })
@@ -56,7 +97,7 @@ router.post('/', async (req, res) => {
 //Se modifica un elemento
 router.put('/:id', blogFinder, async (req, res) => {
 
-    console.log('Blog: body to update: ', req.body)
+    console.log('Blog body to update: ', req.body)
     
     try {
         req.blog.likes = req.body.likes
@@ -68,12 +109,25 @@ router.put('/:id', blogFinder, async (req, res) => {
 })
 
 //Se elimina un elemento
-router.delete('/:id', blogFinder, async (req, res, next) => {
+router.delete('/:id', blogFinder, tokenExtractor, async (req, res, next) => {
 
     try {
-        const deleteBlog = req.blog
-        await req.blog.destroy()
-        res.status(200).json(deleteBlog)
+
+        const user = await User.findByPk(req.decodedToken.id)
+        console.log('User found to delete a blog: ', user.name)
+
+        if (!req.blog){
+            res.status(404).json({ error: "Blog no encontrado"})
+        }
+
+        if (req.blog.userId === user.id){
+            const deleteBlog = req.blog
+            await req.blog.destroy()
+            res.status(200).json(deleteBlog)
+        } else {
+            res.status(403).json({ error: "El blog no pertenece al usuario"})
+        }
+      
     } catch (error) {
         next(error)
     }

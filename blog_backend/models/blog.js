@@ -16,18 +16,24 @@ class Blog extends Model {}
     url: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        isUrl: true   //valida formato (https://foo.com)
+      }
     },
     title: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
     likes: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: true
+      }
     }
   }, {
     sequelize,
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     modelName: 'blog'
   }
 )
