@@ -7,3 +7,7 @@ Bases de Datos Relacionales
     https://fullstackopen.com/es/part13
 
     https://github.com/AngieToro/Fullstack_Course_BaseDatosRelacional
+
+
+Documentación importante:
+https://sequelize.org/docs/v6/core-concepts/model-querying-basics/#operators

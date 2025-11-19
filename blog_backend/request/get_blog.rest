@@ -1,1 +1,11 @@
+### Buscar todos los blogs
+GET http://localhost:3001/api/blogs
+
+### Buscar un blog
 GET http://localhost:3001/api/blogs/1
+
+### Filtrar blogs por el titulo
+GET http://localhost:3001/api/blogs?search=Live
+
+### Filtrar blogs por el titulo o por el autor
+GET http://localhost:3001/api/blogs?search=Live
