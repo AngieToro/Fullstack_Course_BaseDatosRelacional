@@ -1,6 +1,19 @@
 const router = require('express').Router()
+const { tokenExtractor } = require('../middlewares/tokenExtractor')
 
 const { User, Note } = require('../models')
+
+const isAdmin = async (req, res, next) => {
+    const user = await User.findByPk(req.decodedToken.id)
+
+    if (!user.admin){
+        return res.status(401).json({ 
+            error: 'peration not allowed'
+        })
+    }
+
+    next()
+}
 
 //Busca todos los elementos
 router.get('/', async (req, res) => {
@@ -45,28 +58,41 @@ router.post('/', async (req, res) => {
     }
 })
 
-/* //Se modifica un elemento
-router.put('/:id', noteFinder, async (req, res) => {
+//Se modifican un elemento
+router.put('/:id/admin', async (req, res) => {
 
-    console.log('Note body to update: ', req.body);
+    console.log('User body to update: ', req.body);
 
-    if (req.note){      
-        req.note.important = req.body.important
-        await req.note.save()
-        return res.status(200).json(req.note)
-    } else {
-        res.status(404).end()
-    }
+    console.log('User id: ', req.params.id)
+    const user = await User.findByPk(req.params.id)
+    console.log('User found to update: ', user);
+
+    if (!user) return res.status(404).end()
+
+    user.admin = req.body.admin
+    await user.save()
+    
+    return res.status(200).json(user)
+    
 })
 
-//Se elimina un elemento
-router.delete('/:id', noteFinder, async (req, res) => {
+router.put('/:username/disabled', tokenExtractor, isAdmin, async (req, res) => {
 
-    if (req.note){
-        await req.note.destroy()
-    }
+    console.log('User body to update: ', req.body);
 
-    return res.status(204).end()
-}) */
+    const user = await User.findOne({
+        where: {
+            username: req.params.username
+        }
+    })
+    console.log('User found to update: ', user);
+
+    if (!user) return res.status(404).end()
+
+    user.disabled = req.body.disabled
+    await user.save()
+
+    return res.status(200).json(user)
+})
 
 module.exports = router

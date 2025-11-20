@@ -1,9 +1,43 @@
+### Insert 1
 POST http://localhost:3001/api/notes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llIiwiaWQiOjEsImlhdCI6MTc2MzQ5ODY4N30.Q0fVj_RCc46amx22X_--U5hU0t3ANiTg8P_O7cdIhbQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llIiwiaWQiOjEsImlhdCI6MTc2MzY0ODI0NX0.ZLbhnxELn8Wjw5SEZ8sb2CurW41e0_4c8XkG7bzxmCs
+
+{
+    "content": "Test", 
+    "important": false,
+    "userId": 1
+}
+
+### Insert 2
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llIiwiaWQiOjEsImlhdCI6MTc2MzY0ODI0NX0.ZLbhnxELn8Wjw5SEZ8sb2CurW41e0_4c8XkG7bzxmCs
 
 {
     "content": "Apple", 
     "important": true,
     "userId": 1
+}
+
+### Insert 3
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Indjb2RlIiwiaWQiOjIsImlhdCI6MTc2MzY0ODQ0MX0.avkKpDwFNFn7V3arWxp9x32njAMgftS2d2ONaCGcsck"
+
+{
+    "content": "Linux", 
+    "important": true,
+    "userId": 2
+}
+
+### Insert 4
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Indjb2RlIiwiaWQiOjIsImlhdCI6MTc2MzY0ODQ0MX0.avkKpDwFNFn7V3arWxp9x32njAMgftS2d2ONaCGcsck
+
+{
+    "content": "Testing", 
+    "important": false,
+    "userId": 2
 }

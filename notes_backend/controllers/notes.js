@@ -1,8 +1,7 @@
 const router = require('express').Router()
-const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
 const { Note, User } = require('../models');
-const { SECRET } = require('../util/config');
+const { tokenExtractor } = require('../middlewares/tokenExtractor')
 
 //middleware que busca la nota de la base de datos 
 const noteFinder = async(req, res, next) => {
@@ -11,27 +10,6 @@ const noteFinder = async(req, res, next) => {
     console.log('Note found: ', req.note);
     next()
 }
-
-//verificar el token del usuario conectado
-const tokenExtractor = ((req, res, next) => { 
-    const authorization = req.get('authorization')
-    console.log('Token: ', authorization)    
-
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')){
-        try {
-            req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
-            console.log('Decoked token: ', req.decodedToken)
-            
-        } catch {
-            res.status(401).json({ error: 'Token invalid'})
-        }
-    }
-    else {
-        res.status(401).json({ error: 'Token missing'})
-    }
-
-    next()
-})
 
 //Busca todos los elementos
 router.get('/', async (req, res) => {
