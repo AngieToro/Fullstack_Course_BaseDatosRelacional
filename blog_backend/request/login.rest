@@ -1,7 +1,17 @@
+### Login 1
 POST http://localhost:3001/api/login
 Content-Type: application/json
 
 {
     "username": "angie@email.com", 
+    "password": "1234"
+}
+
+### Login 2
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "wcode@email.com", 
     "password": "1234"
 }

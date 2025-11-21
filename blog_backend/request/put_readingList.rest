@@ -1,0 +1,8 @@
+### Se edita el username del user
+PUT http://localhost:3001/api/readinglists/4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llQGVtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NjM3NTA4NDh9.I_p48EvCeZ3I1pHX74DqJbKfFhIcq4eqeFmayGZvjbQ
+
+{
+  "status": "read"
+}

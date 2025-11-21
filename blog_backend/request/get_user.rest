@@ -3,3 +3,9 @@ GET http://localhost:3001/api/users
 
 ### Buscar un usuario
 GET http://localhost:3001/api/users/1
+
+### Buscar un usuario para ver que blogs ha leido
+GET http://localhost:3001/api/users/1?read=true
+
+### Buscar un usuario para ver que blogs no ha leido
+GET http://localhost:3001/api/users/1?read=false

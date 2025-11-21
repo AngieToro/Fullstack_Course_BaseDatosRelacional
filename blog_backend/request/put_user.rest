@@ -1,6 +1,24 @@
+### Se edita el username del user
 PUT http://localhost:3001/api/users/2
 Content-Type: application/json
 
 {
   "username": "atoro"
+}
+
+### Se pone como admin un usuario
+PUT http://localhost:3001/api/users/admin/1
+Content-Type: application/json
+
+{
+  "admin": true
+}
+
+### Se deshabilita un usuario
+PUT http://localhost:3001/api/users/disabled/wcode@email.com
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llQGVtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NjM3NDQ5MjB9.ZktvdhWNXy1Xp97SrFEr-HbHAX9knTX1j1GYUWPFoBE
+
+{
+  "disabled": true
 }

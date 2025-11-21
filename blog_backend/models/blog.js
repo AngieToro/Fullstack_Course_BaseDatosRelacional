@@ -29,6 +29,22 @@ class Blog extends Model {}
       validate: {
         isInt: true
       }
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      validate: {
+        min: {
+          args: [1991],
+          msg: 'Year must be 1991 or later' 
+        },
+        max: {
+          args: [ new Date().getFullYear() ],
+          msg: 'Year cannot be greater than the current year' 
+        },
+        isInt: {
+          msg: 'Year must be an integer (YYYY)' 
+        }
+      }
     }
   }, {
     sequelize,

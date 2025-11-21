@@ -28,6 +28,14 @@ class User extends Model {}
       validate: {
         isAlpha: true //solo acepta caracteres
       }
+    },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     sequelize,

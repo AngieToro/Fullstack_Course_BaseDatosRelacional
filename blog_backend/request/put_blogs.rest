@@ -1,6 +1,16 @@
-PUT http://localhost:3001/api/blogs/5
+### Modificar likes 
+PUT http://localhost:3001/api/blogs/3
 Content-Type: application/json
 
 {
-  "likes": 1
+  "likes": 10
+}
+
+
+### Modificar year 
+PUT http://localhost:3001/api/blogs/3
+Content-Type: application/json
+
+{
+  "year": 1992
 }

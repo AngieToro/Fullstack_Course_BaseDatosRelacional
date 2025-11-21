@@ -1,8 +1,7 @@
 const router = require('express').Router()
-const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
 const { Blog, User } = require('../models')
-const { SECRET } = require('../util/config');
+const { tokenExtractor } = require('../middlewares/tokenExtractor')
 
 //middleware que busca el blog en la base de datos 
 const blogFinder = async(req, res, next) => {
@@ -20,26 +19,19 @@ const blogFinder = async(req, res, next) => {
     next()
 }
 
-//verificar el token del usuario conectado
-const tokenExtractor = ((req, res, next) => { 
-    const authorization = req.get('authorization')
-    console.log('Token: ', authorization)    
+const yearValidation = (req, res, next) => { 
 
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')){
-        try {
-            req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
-            console.log('Decoked token: ', req.decodedToken)
-            
-        } catch {
-            res.status(401).json({ error: 'Token invalid'})
-        }
-    }
-    else {
-        res.status(401).json({ error: 'Token missing'})
+    const year = req.body.year 
+    const currentYear = new Date().getFullYear()
+
+    if (year < 1991 || year > currentYear) {
+        return res.status(400).json({
+            error: `Year must be between 1991 and ${ currentYear }`
+        })
     }
 
     next()
-})
+}
 
 //Busca todos los elementos
 router.get('/', async (req, res) => {
@@ -86,7 +78,7 @@ router.get('/:id', blogFinder, async (req, res) => {
 
 //Se agrega un elemento
 //el error lo detecta el middleware
-router.post('/',tokenExtractor, async (req, res) => {
+router.post('/',tokenExtractor, yearValidation, async (req, res) => {
     
     console.log('Blog body to create: ', req.body)
 
@@ -100,6 +92,7 @@ router.post('/',tokenExtractor, async (req, res) => {
         await blog.save()
         console.log('Blog to add: ', blog.dataValues)
         res.status(201).json(blog)
+        
     } catch (error) {
         console.error('Error: ', error)
         next(error)
@@ -107,12 +100,13 @@ router.post('/',tokenExtractor, async (req, res) => {
 })
 
 //Se modifica un elemento
-router.put('/:id', blogFinder, async (req, res) => {
+router.put('/:id', blogFinder, yearValidation, async (req, res) => {
 
     console.log('Blog body to update: ', req.body)
     
     try {
         req.blog.likes = req.body.likes
+        req.blog.year = req.body.year
         await req.blog.save()
         res.status(200).json(req.blog)
     } catch (error) {

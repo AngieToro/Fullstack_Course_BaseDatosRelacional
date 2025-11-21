@@ -1,32 +1,35 @@
 ### Creacion 1
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llQGVtYWlsLmNvbSIsImlkIjo0LCJpYXQiOjE3NjM1NjkyMjF9.OUos-MMgG10f9gW7SUg9zXCY32G46M7I1KUY-ATwChY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llQGVtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NjM3MzUxODR9.ofWRb2MfS-KZcIev6KkQcGE495l1xiXJbl72PHi04GY
 
 {
     "author": "J. K. Rowling", 
     "url": "https://stories.jkrowling.com/my-story/",
-    "title": "Harry Potter and the Philosophers Stone"
+    "title": "Harry Potter and the Philosophers Stone",
+    "year": 1997
 }
 
 ### Creacion 2
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llQGVtYWlsLmNvbSIsImlkIjo0LCJpYXQiOjE3NjM1NjkyMjF9.OUos-MMgG10f9gW7SUg9zXCY32G46M7I1KUY-ATwChY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llQGVtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NjM3MzUxODR9.ofWRb2MfS-KZcIev6KkQcGE495l1xiXJbl72PHi04GY
 
 {
     "author": "J. K. Rowling", 
     "url": "https://stories.jkrowling.com/my-story/",
-    "title": "Harry Potter and the Chamber of Secrets"
+    "title": "Harry Potter and the Chamber of Secrets",
+    "year": 1998
 }
 
 ### Creacion 3
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llQGVtYWlsLmNvbSIsImlkIjo0LCJpYXQiOjE3NjM1ODY2ODl9.TK0w9_f0XqNJDnqNDHulecIWHxREjGX-nX3SSO36ZPQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Indjb2RlQGVtYWlsLmNvbSIsImlkIjoyLCJpYXQiOjE3NjM3MzUyNzd9.S_tmtUVT_sqMu53ZGqJv5zX3iu-RA_ih2oRGEbYjTKE
 
 {
     "author": "J. R. R. Tolkien", 
     "url": "https://es.wikipedia.org/wiki/J._R._R._Tolkien",
-    "title": "The Lord of the Rings"
+    "title": "The Lord of the Rings",
+    "year": 1991
 }
