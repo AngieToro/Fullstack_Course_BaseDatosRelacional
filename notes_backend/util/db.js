@@ -16,19 +16,6 @@ const sequelize = new Sequelize(DATABASE_URL, {
         : { },
 })
 
-const connectedDataBase = async() => {
-    try {
-        await sequelize.authenticate()
-        await runMigrations()
-        console.log('Connected to the database')
-    } catch (error) {
-        console.log('Failed to connected to the database')
-        return process.exit(1)
-    }
-    
-    return null
-}
-
 //se ejecuta cada vez que la aplicación abre una conexión de base de datos cuando se inicia
 //Sequelize realiza un seguimiento de las migraciones que ya se han completado, por lo que si no hay nuevas migraciones, ejecutar la función runMigrations no hace nada
 const migrationConf = {
@@ -51,6 +38,19 @@ const rollbackMigration = async () => {
     await sequelize.authenticate()
     const migrator = new Umzug(migrationConf)
     await migrator.down()
+}
+
+const connectedDataBase = async() => {
+    try {
+        await sequelize.authenticate()
+        await runMigrations()
+        console.log('Connected to the database')
+    } catch (error) {
+        console.log('Failed to connected to the database')
+        return process.exit(1)
+    }
+    
+    return null
 }
 
 module.exports = {

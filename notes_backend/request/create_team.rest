@@ -1,0 +1,15 @@
+### Create 1
+POST http://localhost:3001/api/teams
+Content-Type: application/json
+
+{
+    "name": "TeamA"
+}
+
+### Create 2
+POST http://localhost:3001/api/teams
+Content-Type: application/json
+
+{ 
+    "name": "TeamB"
+}
