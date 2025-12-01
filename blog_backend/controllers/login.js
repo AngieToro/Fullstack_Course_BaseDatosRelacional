@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const router = require('express').Router()
 
-const { SECRET, SALT_ROUNDS } = require('../util/config')
-const User = require('../models/user')
+const { SECRET } = require('../util/config')
+const { Session, User } = require('../models')
 
 router.post('/', async (req, res ) => {
 
@@ -43,13 +43,37 @@ router.post('/', async (req, res ) => {
         id: user.id
     }
 
+    //firmar el token
     const token = jwt.sign(userForToken, SECRET)
+
+    //crear la sesion
+    await Session.create({
+        token,
+        userId: user.id
+    })
 
     res.status(200).send({
         token,
         username: user.username,
         name: user.name
     })
+})
+
+router.delete('/logout', async (req, res) => {
+
+    const authorization = req.get('authorization')
+
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        const token = authorization.substring(7)
+        console.log('Token to destroy: ', token)
+        
+        await Session.destroy( {
+            where: { token }
+        })
+    }
+
+    return res.status(204).end()
+
 })
 
 module.exports = router

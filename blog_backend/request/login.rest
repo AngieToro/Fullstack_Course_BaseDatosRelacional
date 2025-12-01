@@ -15,3 +15,7 @@ Content-Type: application/json
     "username": "wcode@email.com", 
     "password": "1234"
 }
+
+### Logout
+DELETE  http://localhost:3001/api/login/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZ2llQGVtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NjQ2MDc5MDl9.BiqAg8GlKxs9kazulaNQqfzieqtrWmzcAFHXksjZ_P8

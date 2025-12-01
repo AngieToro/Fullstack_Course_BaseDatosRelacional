@@ -16,8 +16,8 @@ Notas:
 - En las migraciones los nombres de las tablas y las columnas se escriben exactamente como aparecen en la base de datos, en la convención de nomenclatura snake_case. Ejemplo: user_id, password_hash, create_at
 - Los modelos usan la convención de nomenclatura camelCase predeterminada de Sequelize.Ejemplo: userId, passwordHash,createAt
 
-Asociaciones entre relaciones
-hasMany -> getXXX, addXXX, setXXX, removeXXX
-belongsToMany -> igual pero para ambos modelos
-belongsTo -> getXXX, setXXX
-hasOne -> getXXX, setXXX
+Asociaciones entre relaciones:
+- hasMany -> getXXX, addXXX, setXXX, removeXXX
+- belongsToMany -> igual pero para ambos modelos
+- belongsTo -> getXXX, setXXX
+- hasOne -> getXXX, setXXX

@@ -5,11 +5,13 @@ module.exports = {
     up: async( { context: queryInterface } ) => {
         await queryInterface.addColumn('users','admin',{
             type: DataTypes.BOOLEAN,
-            default: false
+            defaultValue: false,
+            allowNull: false,
         })
         await queryInterface.addColumn('users','disabled',{
             type: DataTypes.BOOLEAN,
-            default: false
+            defaultValue: false,
+            allowNull: false,
         })
     },
     //indica cómo deshacer la migración
