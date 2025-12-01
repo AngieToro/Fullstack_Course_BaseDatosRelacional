@@ -3,3 +3,15 @@ GET http://localhost:3001/api/users
 
 ### Buscar un usuario
 GET http://localhost:3001/api/users/1
+
+### Buscar los equipos de un usuario
+GET http://localhost:3001/api/users/1?teams=true
+
+### Buscar los usuarios admin
+GET http://localhost:3001/api/users/?admin=true
+
+### Buscar los usuarios deshabilitados
+GET http://localhost:3001/api/users/?disabled=true
+
+### Buscar por el nombre del usuario
+GET http://localhost:3001/api/users/?name=Angelica
